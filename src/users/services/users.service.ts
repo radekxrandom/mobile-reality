@@ -1,29 +1,26 @@
-import { EntityRepository, QueryUser } from '@mikro-orm/core';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { EntityRepository } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { Injectable } from "@nestjs/common";
 
-import { User } from '../models/user.model';
-import { UsersFactory } from '../factories/users.factory';
-import { CreateUserCommand } from '../commands/create-user.command';
+import { User } from "../models/user.model";
+import { UsersFactory } from "../factories/users.factory";
+import { CreateUserCommand } from "../commands/create-user.command";
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: EntityRepository<User>,
-    private readonly usersFactory: UsersFactory,
+    private readonly usersFactory: UsersFactory
   ) {}
-  
+
   async findAll(
     limit: number = 25,
-    offset: number = 0,
+    offset: number = 0
   ): Promise<[User[], number]> {
     const [users, total] = await this.userRepository.findAndCount(
       {},
-      [],
-      { createdAt: QueryUser.DESC },
-      limit,
-      offset,
+      { limit, offset }
     );
     return [users, total];
   }
@@ -41,10 +38,13 @@ export class UsersService {
     return user;
   }
 
-  async edit(id: string, email: string, firstName: string, lastName: string): Promise<User> {
-    const user: User = await this.userRepository.findOneOrFail(
-      id,
-    );
+  async edit(
+    id: string,
+    email: string,
+    firstName: string,
+    lastName: string
+  ): Promise<User> {
+    const user: User = await this.userRepository.findOneOrFail(id);
     user.email = email;
     user.firstName = firstName;
     user.lastName = lastName;
@@ -54,9 +54,7 @@ export class UsersService {
   }
 
   async delete(id: string): Promise<boolean> {
-    const user: User = await this.userRepository.findOneOrFail(
-      id,
-    );
+    const user: User = await this.userRepository.findOneOrFail(id);
     user.deletedAt = new Date();
     await this.userRepository.flush();
 
