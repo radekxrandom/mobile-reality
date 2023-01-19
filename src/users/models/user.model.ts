@@ -1,15 +1,14 @@
-import { BeforeCreate, Property } from '@mikro-orm/core';
+import { BeforeCreate, Property } from "@mikro-orm/core";
 
-import { BaseSoftDeletable } from './base-soft-deletable.model';
+import { BaseSoftDeletable } from "./base-soft-deletable.model";
 
 export class User extends BaseSoftDeletable {
-
-	@Property()
-	email: string;
+  @Property()
+  email: string;
 
   @Property()
-	firstName: string;
+  firstName: string;
 
   @Property()
-	lastName: string;
+  lastName: string;
 }
