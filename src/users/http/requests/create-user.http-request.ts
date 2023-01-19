@@ -1,7 +1,7 @@
 import { IsEmail, IsNotEmpty , MaxLength} from 'class-validator';
 
 
-export class CreateUserDto {
+export class CreateUserHttpRequest {
   @IsNotEmpty()
   @IsEmail()
   email: string;

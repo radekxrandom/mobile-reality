@@ -2,7 +2,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 
 import { User } from './models/user.model';
-import { UsersController } from './controllers/users.controller';
+import { UsersController } from './http/controllers/users.controller';
 import { UsersFactory } from './factories/users.factory';
 import { UsersService } from './services/users.service';
 

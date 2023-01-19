@@ -1,12 +1,10 @@
 import { EntityRepository, QueryUser } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { RedisClient } from '@nestjs-redis/core';
 
 import { User } from '../models/user.model';
 import { UsersFactory } from '../factories/users.factory';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { EditUserDto } from '../dto/edit-user.dto';
+import { CreateUserCommand } from '../commands/create-user.command';
 
 @Injectable()
 export class UsersService {
@@ -14,7 +12,6 @@ export class UsersService {
     @InjectRepository(User)
     private readonly userRepository: EntityRepository<User>,
     private readonly usersFactory: UsersFactory,
-    private readonly redisClient: RedisClient
   ) {}
   
   async findAll(
@@ -37,21 +34,22 @@ export class UsersService {
     return user;
   }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const user: User = await this.usersFactory.create(createUserDto);
+  async create(createUserCommand: CreateUserCommand): Promise<User> {
+    const user: User = await this.usersFactory.create(createUserCommand);
     await this.userRepository.persistAndFlush(user);
 
     return user;
   }
 
-  async edit(editUserDto: EditUserDto): Promise<User> {
+  async edit(id: string, email: string, firstName: string, lastName: string): Promise<User> {
     const user: User = await this.userRepository.findOneOrFail(
-      editUserDto.id,
+      id,
     );
-    for (let property in user) {
-      user[property] = editUserDto[property];
-    }
+    user.email = email;
+    user.firstName = firstName;
+    user.lastName = lastName;
     await this.userRepository.flush();
+
     return user;
   }
 
@@ -63,17 +61,5 @@ export class UsersService {
     await this.userRepository.flush();
 
     return true;
-  }
-
-  listenToRedis() {
-    this.redisClient.on('message', async (channel, message) => {
-      const userDto = new CreateUserDto();
-      const userProperties = JSON.parse(message)
-      for (let property in userProperties) {
-        userDto[property] = userProperties[property];
-      }
-      await this.create(userDto);
-    });
-    this.redisClient.subscribe('CREATE_USER');
   }
 }

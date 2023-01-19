@@ -9,7 +9,7 @@ import { MigrationRunner } from './database/migrator';
 
 @Module({
   imports: [RedisModule.forRoot({
-    host: 'localhost',
+    host: 'localhost', // should use env and configService
     port: 6379,
   }), MikroOrmModule.forRoot({
     type: 'postgresql',

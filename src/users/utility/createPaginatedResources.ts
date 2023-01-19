@@ -1,4 +1,4 @@
-import { PaginatedResourcesDto   } from '../dto/paginated-resources.dto';
+import { PaginatedResourcesDto   } from '../http/responses/paginated-resources.http-response';
 
 export const createPaginatedResources = <T extends any[]>(
   limit: number,

@@ -1,7 +1,7 @@
 import { IsEmail, IsNotEmpty , MaxLength} from 'class-validator';
 
 
-export class EditUserDto {
+export class EditUserHttpRequest {
   @IsNotEmpty()
   id: string;
 
