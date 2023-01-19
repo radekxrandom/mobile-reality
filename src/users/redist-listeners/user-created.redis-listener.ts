@@ -1,14 +1,17 @@
 import { RedisClient } from "nestjs-redis";
 import { CreateUserCommand } from "../commands/create-user.command";
-import { Injectable } from "@nestjs/common";
+import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
 import { UsersService } from "../services/users.service";
 
 @Injectable()
-export class UserCreatedRedisListener {
+export class UserCreatedRedisListener implements OnApplicationBootstrap {
   constructor(
     private readonly redisClient: RedisClient,
     private readonly usersService: UsersService
   ) {}
+  onApplicationBootstrap() {
+    this.listenToRedis();
+  }
 
   listenToRedis() {
     this.redisClient.on("message", async (channel, message) => {
