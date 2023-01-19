@@ -21,6 +21,7 @@ import { User } from "../../models/user.model";
 import { UserHttpResponse } from "../responses/user.http-response";
 import { EditUserHttpRequest } from "../requests/edit-user.http-request";
 import { CreateUserCommand } from "src/users/commands/create-user.command";
+import { EditUserCommand } from "src/users/commands/edit-user.command";
 
 @Controller("users")
 @UseFilters(new NotFoundExceptionFilter())
@@ -81,11 +82,9 @@ export class UsersController {
     @Param("id") id: string,
     @Body() editUserHttpRequest: EditUserHttpRequest
   ): Promise<UserHttpResponse> {
+    const editUserCommand = new EditUserCommand(id, editUserHttpRequest.email, editUserHttpRequest.firstName, editUserHttpRequest.lastName)
     const user: User = await this.usersService.edit(
-      id,
-      editUserHttpRequest.email,
-      editUserHttpRequest.firstName,
-      editUserHttpRequest.lastName
+      editUserCommand
     );
 
     const userResponse = new UserHttpResponse(

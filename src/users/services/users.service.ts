@@ -39,15 +39,12 @@ export class UsersService {
   }
 
   async edit(
-    id: string,
-    email: string,
-    firstName: string,
-    lastName: string
+    editUserCommand: EditUserCommand
   ): Promise<User> {
-    const user: User = await this.userRepository.findOneOrFail(id);
-    user.email = email;
-    user.firstName = firstName;
-    user.lastName = lastName;
+    const user: User = await this.userRepository.findOneOrFail(editUserCommand.id);
+    user.email = editUserCommand.email;
+    user.firstName = editUserCommand.firstName;
+    user.lastName = editUserCommand.lastName;
     await this.userRepository.flush();
 
     return user;
