@@ -16,7 +16,7 @@ import { NotFoundExceptionFilter } from "../../../shared/exception-filters/not-f
 import { CreateUserHttpRequest } from "../requests/create-user.http-request";
 import { UsersService } from "../../services/users.service";
 import { PaginatedResourcesDto } from "../responses/paginated-resources.http-response";
-import { createPaginatedResources } from "../../utility/createPaginatedResources";
+import { createPaginatedResources } from "../../utility/create-paginated-resources";
 import { User } from "../../models/user.model";
 import { UserHttpResponse } from "../responses/user.http-response";
 import { EditUserHttpRequest } from "../requests/edit-user.http-request";
