@@ -3,7 +3,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 
 import { User } from "../models/user.model";
-import { UsersFactory } from "../factories/users.factory";
+import { UserFactory } from "../factories/user.factory";
 import { CreateUserCommand } from "../commands/create-user.command";
 
 @Injectable()
@@ -11,7 +11,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: EntityRepository<User>,
-    private readonly usersFactory: UsersFactory
+    private readonly userFactory: UserFactory
   ) {}
 
   async findAll(
@@ -32,7 +32,7 @@ export class UsersService {
   }
 
   async create(createUserCommand: CreateUserCommand): Promise<User> {
-    const user: User = await this.usersFactory.create(createUserCommand);
+    const user: User = await this.userFactory.create(createUserCommand);
     await this.userRepository.persistAndFlush(user);
 
     return user;

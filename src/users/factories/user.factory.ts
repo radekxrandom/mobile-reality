@@ -1,7 +1,7 @@
 import { CreateUserCommand } from "../commands/create-user.command";
-import { User } from '../models/user.model';
+import { User } from "../models/user.model";
 
-export class UsersFactory {
+export class UserFactory {
   create(createUserCommand: CreateUserCommand) {
     const { email, firstName, lastName } = createUserCommand;
     const user = new User();
